@@ -1,0 +1,7 @@
+# all .c extensions
+
+*.c
+
+
+# git secret 
+secret.txt
