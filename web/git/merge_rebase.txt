@@ -1,2 +1,3 @@
 this is a line for commit 1 in master
 this is a line for commit 2 in master
+this is a line for commit 3 in master
