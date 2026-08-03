@@ -1,1 +1,2 @@
 this is the new detached head file and line
+this is one line
