@@ -1,6 +1,6 @@
-# all .c extensions
+# all .exe extensions
 
-*.c
+*.exe
 
 
 # git secret 
