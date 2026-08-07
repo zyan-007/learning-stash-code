@@ -1,1 +1,1 @@
-this is a student grading system made by person 2
+this is a student grading system made by person 1
