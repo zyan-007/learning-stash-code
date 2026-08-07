@@ -1,0 +1,5 @@
+student_name: grade
+john: 95
+jackob: 76
+cathie: 56
+
