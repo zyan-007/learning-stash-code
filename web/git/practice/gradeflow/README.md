@@ -1,0 +1,1 @@
+This is the general readme for git exercise practice
