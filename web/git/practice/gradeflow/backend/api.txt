@@ -1,0 +1,4 @@
+this is not api you idiot it's just for practice never put api keys on remote repos 
+student endpoint1
+student endpoint2
+student endpoint3
