@@ -6,3 +6,6 @@
 # git secret 
 secret.txt
 desktop.ini
+
+# ignore folder
+capstone_project/
