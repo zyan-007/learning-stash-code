@@ -19,27 +19,23 @@ int main(){
     for(int& i: b)
         cin >> i;
 
-    int count1  = 0;
+    int count1 = 0;
     int count2 = 0;
 
-    for(int i = 0; i < int(b.size()); ++i){
-        for(int j = 0; j < int(a.size()); ++j){
-            count1++;
-            if(b[i] == a[j])
-                break;
-        }
-    }
 
-    for(int i = 0; i < int(b.size()); ++i){
-        for(int j = int(a.size())-1; j >= 0; --j){
-            count2++;
+    for(int i = 0; i < b.size(); ++i){     
+        int found = 0;   
+        for(int j = 0; j < a.size(); ++j){
+            found++;
             if(b[i] == a[j])
                 break;
         }
+        count1 += found;
+        count2 += (b.size()-found)+1;
+
     }
 
     cout << count1 << " " << count2;
-
 
     return 0;
 }
