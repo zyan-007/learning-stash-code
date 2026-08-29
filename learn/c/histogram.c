@@ -35,21 +35,35 @@ int main(){
         char_count--;
     }
     sentence[strlen(sentence)-trailing_whitespace] = '\0';
-    // printf("%s", sentence);
+    // printf("%s %d", sentence, strlen(sentence));
 
     // removing spaces more than one
-    // write here
+    int read = 0;
+    int write = 0;
+    while(read < strlen(sentence)){
+        if(sentence[read] == ' '){
+            sentence[write] = sentence[read];
+            while(sentence[read] == ' ') read++;
 
-    char word[500][500];
-    int word_count = 0;
-
-
-    for(int i = 0; i < strlen(sentence); ++i){
-        if(sentence[i] == ' ' && sentence[i+1] != ' '){
-            char_count = 0;
-            word_count++;
+            read--;
+            write++;            
         }
+        else{
+            sentence[write] = sentence[read];
+            write++;
+        }
+
+        read++;
     }
+    sentence[write] = '\0';
+    printf("%s - %d\n", sentence, strlen(sentence));
+
+
+    
+
+
+
+
 
     return 0;
 }
