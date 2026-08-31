@@ -2,13 +2,24 @@
 using namespace std;
 
 void solve(){
-    int x , y; // row and column question creates confusion
+    long long int x , y; // row and column question creates confusion
     cin >> x >> y;
 
-    int max_x_y = max(x, y);
-    int n = 1 + 2*(((max_x_y-1)/2)*(1+(max_x_y-1)));
+    long long int max_xy = max(x, y);
+    long long int value_max = 1+(2*(((max_xy-1) * (1 + (max_xy-1)))/2));
+    // cout <<  max_xy << " " << value_max << endl;
 
-    cout << n;
+    // cout << value_max << " ";
+    if(max_xy % 2 != 0){
+        value_max += (max_xy-x);
+        value_max -= (max_xy-y);
+    }
+    else{
+        value_max -= (max_xy-x);
+        value_max += (max_xy-y);
+    }
+
+    cout << value_max << endl;
 }
 
 int main(){
