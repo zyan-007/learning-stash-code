@@ -29,7 +29,7 @@ int main(){
     //     cout << "not found" << endl;
 
 
-    cout << a.count(500) << endl;
+    cout << a.count(510) << endl;
 
     for(int i: a)
         cout << i << " ";
