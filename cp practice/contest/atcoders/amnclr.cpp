@@ -12,10 +12,10 @@ int main(){
         cout << s[0] << "o" << s[1] << endl;
     else{
         cout << s[0];
-        for(int i = 1; i < s.size()-1; ++i)
-            cout << "o" << s[i] << "o";
-        
-        cout << s[s.size()-1] << endl;
+        int si = s.size();
+        for(int i = 1; i < si; ++i)
+            cout << "o" << s[i];
+
     }
 
     return 0;
