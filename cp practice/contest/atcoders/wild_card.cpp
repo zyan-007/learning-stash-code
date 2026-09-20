@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+
+    string s, t;
+    cin >> s >> t;
+
+    int flag = 0;
+
+    for(int i = 0; i < n; ++i){
+        if(s[i] != t[i]){
+            if(t[i] != '*'){
+                flag = 1;
+                break;
+            }
+
+        }
+    }
+
+    if (flag == 1)
+        cout << "No" << endl;
+    else
+        cout << "Yes" << endl;
+
+    return 0;
+}

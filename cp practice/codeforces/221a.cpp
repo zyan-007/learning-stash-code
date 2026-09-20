@@ -5,9 +5,14 @@ int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    unordered_map<string, string> a(10);
+    int n;
+    cin >> n;
 
-    cout << a.size() << endl;
+    cout << n << " ";
+    for(int i = 1; i <= (n-1); ++i){
+        cout << i << " ";
+    }
+
 
     return 0;
 }
