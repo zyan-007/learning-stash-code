@@ -24,8 +24,8 @@ using namespace std;
 // back, anything that was ahead of you is gone for good.
 //
 // EXAMPLE:
-//   visitPage(1)   -> history so far: [1]              you're at 1
-//   visitPage(2)   -> history so far: [1, 2]            you're at 2
+//   visitPage(1)   -> history so far: [1]                you're at 1
+//   visitPage(2)   -> history so far: [1, 2]             you're at 2
 //   visitPage(3)   -> history so far: [1, 2, 3]          you're at 3
 //   goBack()       -> returns 2   (3 is discarded)       you're at 2
 //   goBack()       -> returns 1                          you're at 1
@@ -35,12 +35,20 @@ using namespace std;
 // Implement:
 //   void visitPage(int page);
 //   int goBack();
-// using ONE container that naturally supports "push on top / pop off
-// top / peek top". Run the exact sequence above in main() and print
-// what goBack() returns each time — it should print 2, 1, 1.
-void q1_browserHistoryDemo(){
+// Pick the container you think fits. Run the exact sequence above in
+// main() and print what goBack() returns each time — it should print
+// 2, 1, 1.
 
-}
+stack <int> page_visited;
+
+ void visitPage(int page){
+    page_visited.push(page);
+ }
+
+ int goBack(){
+    page_visited.pop();
+    return page_visited.top();
+ }
 
 // ---------------------------------------------------------------------
 // Q2. Task scheduler by priority.
@@ -57,10 +65,17 @@ void q1_browserHistoryDemo(){
 // EXPECTED processing order (print the names in this order):
 //   server_down (9), deploy (5), email (3), cleanup (1)
 //
-// Which container gives you O(log n) insert and O(log n) "grab the
-// current max" WITHOUT you manually re-sorting or writing your own
-// heap logic?
-void q2_taskScheduler(vector<pair<int,string>> tasks);
+// Pick the container you think fits and implement the processing.
+map<int, string, greater<int>> task_schedule;
+void q2_taskScheduler(vector<pair<int,string>> tasks){
+    for(auto& i: tasks){
+        task_schedule[i.first] = i.second;
+    }
+
+    for(auto&i :task_schedule){
+        cout << i.second << " (" << i.first << ")" << endl; 
+    }
+}
 
 // ---------------------------------------------------------------------
 // Q3. Word frequency, alphabetically ordered — using exactly ONE
@@ -74,18 +89,45 @@ void q2_taskScheduler(vector<pair<int,string>> tasks);
 //   banana: 2
 //   cherry: 1
 //
-// Which container gives you grouping (like a hashmap would) AND sorted
-// iteration order for free, just by iterating it front to back?
-void q3_wordFrequencyOrdered(vector<string> words);
+// Use exactly one container, and pick the one you think fits.
+map<string, int> word_frequency;
+void q3_wordFrequencyOrdered(vector<string> words){
+    for(string & i: words){
+        if (word_frequency.count(i) == 1){
+            word_frequency[i] += 1;
+        }
+        else{
+            word_frequency[i] = 1;
+        }
+    }
+
+    for(auto &i: word_frequency){
+        cout << i.first << ": " << i.second << endl;
+    }
+}
 
 // ---------------------------------------------------------------------
 // Q4. Same word-frequency problem as Q3, same example input, same kind
 // of output — BUT now you don't care about alphabetical order at all,
 // you only care about the fastest average-case insert/lookup while
-// counting. Which container should you switch to, and why is it a
-// different choice than Q3? (Print the counts in whatever order this
+// counting. Pick the container you think fits — it should be a
+// different choice than Q3. (Print the counts in whatever order this
 // container gives you — that's expected/fine here.)
-void q4_wordFrequencyFast(vector<string> words);
+unordered_map<string, int> new_word_frequency;
+void q4_wordFrequencyFast(vector<string> words){
+    for(string & i: words){
+        if (new_word_frequency.count(i) == 1){
+            new_word_frequency[i] += 1;
+        }
+        else{
+            new_word_frequency[i] = 1;
+        }
+    }
+
+    for(auto &i: new_word_frequency){
+        cout << i.first << ": " << i.second << endl;
+    }
+}
 
 // ---------------------------------------------------------------------
 // Q5. Membership + range queries on integers.
@@ -101,9 +143,28 @@ void q4_wordFrequencyFast(vector<string> words);
 //   void build(vector<int> values);
 //   bool exists(int x);
 //   vector<int> rangeQuery(int lo, int hi);
-// using ONE container that keeps things sorted AND unique automatically,
-// and supports efficient range iteration (think: lower_bound/upper_bound).
+// using ONE container you think fits both operations well.
+set<int> membership;
 void q5_rangeAndMembership();
+void build(vector<int> values){
+    for(int &i: values)
+        membership.insert(i);
+}
+
+bool exists(int x){
+    return (membership.count(x) == 1);
+}
+
+vector<int> rangeQuery(int lo, int hi){
+    vector <int> a;
+    while(lo <= hi){
+        if (membership.count(lo) == 1)
+            a.push_back(lo);
+        lo++;
+    }
+
+    return a;
+}
 
 // ---------------------------------------------------------------------
 // Q6. Balanced brackets checker.
@@ -115,10 +176,31 @@ void q5_rangeAndMembership();
 //   ""          -> true    (empty is trivially balanced)
 //
 // Idea: walk the string left to right. On an opening bracket, remember
-// it. On a closing bracket, it must match the MOST RECENTLY remembered
-// still-open bracket, or the string is unbalanced. Which container
-// matches "remember most recent, check/remove most recent" naturally?
-bool q6_isBalanced(string s);
+// it. On a closing bracket, it must match the most recently remembered
+// still-open bracket, or the string is unbalanced. Pick the container
+// you think fits.
+stack <char> brackets;
+bool q6_isBalanced(string s){
+    if (s == "")
+        return true;
+    for(char&i: s){
+        if (i == '(' || i == '{' || i == '[')
+            brackets.push(i);
+        else{ // it has to be ) or } or ]
+            if (brackets.top() == '(' && i == ')')
+                brackets.pop();
+            else if(brackets.top() == '{' && i == '}')
+                brackets.pop();
+            else if(brackets.top() == '[' && i == ']')
+                brackets.pop();
+            else
+                return false;
+        }
+    }
+    if (brackets.empty())
+        return true;
+    return false;
+}
 
 // ---------------------------------------------------------------------
 // Q7. Editor undo history with a size cap.
@@ -132,14 +214,30 @@ bool q6_isBalanced(string s);
 //                         // OLDEST one ("type_A") -> left with B, C, D
 //   undo()                -> returns "type_D" (most recent), left with B, C
 //
-// You need O(1) add-to-recent-end, O(1) remove-from-recent-end (undo),
-// AND O(1) remove-from-oldest-end (trimming). Implement:
+// You need fast add-to-recent-end, remove-from-recent-end (undo), AND
+// remove-from-oldest-end (trimming). Implement:
 //   void addAction(string action);
 //   void trimOldestIfOver(size_t maxSize);
 //   string undo();
-// Which container gives O(1) push/pop at BOTH ends?
+// Pick the container you think fits.
+deque<string> editor;
 void q7_editorHistoryDemo();
+void addAction(string action){
+    editor.push_back(action);
+}
 
+void trimOldestIfOver(size_t maxSize){
+    int size = editor.size() - maxSize;
+
+    editor.erase(editor.begin(), editor.begin()+size);
+}
+
+string undo(){
+    string value = editor.back();
+    editor.pop_back();
+
+    return value;
+}
 // ---------------------------------------------------------------------
 // Q8. Repeated middle-of-sequence insertion via a held iterator.
 //
@@ -152,10 +250,12 @@ void q7_editorHistoryDemo();
 // EXPECTED after inserting 25 before the iterator-at-30:
 //   {10, 20, 25, 30, 40}
 //
-// vector/deque would have to shift every element after the insertion
-// point (O(n)) — which container makes this insert O(1) once you
-// already have the iterator?
-void q8_midInsertDemo();
+// Pick the container you think avoids shifting every element after the
+// insertion point.
+list<int> a = {10, 20, 30, 40};
+void q8_midInsertDemo(list<int>::iterator it, int value){
+    a.insert(next(it, -1), value);
+}
 
 // ---------------------------------------------------------------------
 // Q9. Intersection of two integer collections, deduplicated, sorted.
@@ -166,10 +266,12 @@ void q8_midInsertDemo();
 //
 // EXPECTED output: {1, 4, 5}   (present in both, no dupes, sorted)
 //
-// Don't write your own nested O(n^2) loop. Use a container that gives
-// you sorted+unique elements, then either lean on its membership check
-// or an STL algorithm like set_intersection.
-vector<int> q9_intersection(vector<int> a, vector<int> b);
+// Don't write your own nested O(n^2) loop. Pick a container and/or STL
+// algorithm you think fits.
+vector<int> q9_intersection(vector<int> a, vector<int> b){  
+    // question 9 is very hard, has been 1hour i couldn't land on anything still trying, starting 2nd hour
+    // on second hour and still stuck    
+}
 
 // ---------------------------------------------------------------------
 // Q10. TRICKY — student_id -> list_of_grades, but iteration must follow
@@ -187,15 +289,94 @@ vector<int> q9_intersection(vector<int> a, vector<int> b);
 //   (NOT sorted as 101, 103, 105 — insertion order must be preserved)
 //
 // No single STL container does "fast lookup by key" AND "remembers
-// insertion order" by itself. Think about combining two containers:
-// one for O(1)/O(log n) lookup by id, one for remembering the order
-// ids were first seen. Design + implement it.
+// insertion order" by itself. Think about combining two containers.
+// Design + implement it.
 void q10_insertionOrderedMap();
 
 int main() {
     // Call your functions here using the exact example inputs given
     // above, and print output so I can check it against the expected
     // output shown in each question's comment.
+    
+    cout << "question-1" << endl;
+    //question 1
+      visitPage(1);
+      visitPage(2);
+      visitPage(3); 
+      cout << goBack() << endl;     
+      cout << goBack() << endl;    
+      visitPage(5); 
+      cout << goBack() << endl;
+    cout << endl;
+    
+    cout << "question-2" << endl;
+    //question 2
+    vector<pair<int, string>> tasks = {{3, "email"}, {9, "server_down"}, {1, "cleanup"}, {5, "deploy"}};
+    q2_taskScheduler(tasks);
+    cout << endl;
+
+    cout << "question-3" << endl;
+    //question 3
+    vector <string> words = {"banana", "apple", "banana", "cherry", "apple", "apple"};
+    q3_wordFrequencyOrdered(words);
+    cout << endl;
+
+    cout << "question-4" << endl;
+    //question 4
+    q4_wordFrequencyFast(words);
+    cout << endl;
+
+    cout << "question-5" << endl;
+    //question 5
+    build({5, 1, 9, 3, 7, 3, 1}); 
+    cout << exists(7) << endl;        
+    cout << exists(4) << endl;     
+    vector<int> printingQuery = rangeQuery(2, 7);
+    for(int &i: printingQuery)
+        cout << i << " ";
+    cout << endl;
+
+
+    cout << "question-6" << endl;
+    // question 6
+    cout << q6_isBalanced("{[()()]}") << endl;
+    cout << q6_isBalanced("{[(])}") << endl;
+    cout << q6_isBalanced("(((") << endl;
+    cout << q6_isBalanced("") << endl;
+    cout << endl;
+
+    cout << "question-7" << endl;
+    // question 7
+    addAction("type_A");
+    addAction("type_B");
+     addAction("type_C");
+    addAction("type_D");
+    for(string&i: editor)
+        cout << i << " ";
+    cout << endl;
+     trimOldestIfOver(3);   
+    for(string&i: editor)
+        cout << i << " ";
+    cout << endl;
+    cout << undo() << endl;
+    
+    for(string&i: editor)
+        cout << i << " ";
+    cout << endl;
+
+    cout << "question-8" << endl;
+    // question 8
+    for(int&i: a){
+        cout << i << " ";
+    }
+    cout << endl;
+    q8_midInsertDemo(next(a.begin(), 3), 25);
+    for(int&i: a){
+        cout << i << " ";
+    }
+    cout << endl;
+    cout << endl;
+
 
     return 0;
 }
