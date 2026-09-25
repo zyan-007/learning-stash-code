@@ -271,6 +271,35 @@ void q8_midInsertDemo(list<int>::iterator it, int value){
 vector<int> q9_intersection(vector<int> a, vector<int> b){  
     // question 9 is very hard, has been 1hour i couldn't land on anything still trying, starting 2nd hour
     // on second hour and still stuck    
+    unordered_set<int> a1;
+    unordered_set<int> b1;
+    for(int& i: a)
+        a1.insert(i);
+    for(int& i: b)
+        b1.insert(i);
+
+    map<int, int> final_value;
+    for(const int& i: a1){
+        if (final_value.count(i) == 1)
+            final_value[i]++;
+        else
+            final_value[i] = 1;
+    }
+    for(const int& i: b1){
+        if (final_value.count(i) == 1)
+            final_value[i]++;
+        else
+            final_value[i] = 1;
+    }
+
+    vector<int> final_array;
+
+    for(auto& i: final_value){
+        if(i.second == 2)
+            final_array.push_back(i.first);
+    }
+
+    return final_array;
 }
 
 // ---------------------------------------------------------------------
@@ -291,7 +320,27 @@ vector<int> q9_intersection(vector<int> a, vector<int> b){
 // No single STL container does "fast lookup by key" AND "remembers
 // insertion order" by itself. Think about combining two containers.
 // Design + implement it.
-void q10_insertionOrderedMap();
+vector<int> student_id;
+map<int, vector<int>> marks;
+void q10_insertionOrderedMap(){
+    for(int& i: student_id){
+        cout << i << " -> [";
+        for(int& j: marks[i]){
+            cout << j << " ";
+        }
+        cout << "]" << endl;
+    }
+};
+
+void insert_record(int id, vector<int> grade){
+    if(find(student_id.begin(), student_id.end(), id) != student_id.end()){
+        marks[id] = grade;
+    }
+    else{
+        student_id.push_back(id);
+        marks[id] = grade;
+    }
+}
 
 int main() {
     // Call your functions here using the exact example inputs given
@@ -377,6 +426,37 @@ int main() {
     cout << endl;
     cout << endl;
 
+//   a = {4, 9, 5, 9, 1, 1}
+//   b = {5, 1, 4, 4, 8}
 
+    cout << "question 9" << endl;
+    //question 9
+    vector<int> a = {4, 9, 5, 9, 1, 1};
+    vector<int> b = {5, 1, 4, 4, 8};
+    vector<int> result = q9_intersection(a, b);
+
+    for(int& i: result)
+        cout << i << " ";
+    cout << endl;
+
+
+    cout << "question 10" << endl;
+    //question 10
+    insert_record(103, {90, 85});
+    insert_record(101, {70});
+    insert_record(105, {60, 95, 88});
+    insert_record(103, {101, 50, 33});
+    q10_insertionOrderedMap();
+    cout << endl;
+
+    //   insert(103, {90, 85})
+//   insert(101, {70})
+//   insert(105, {60, 95, 88})
+//
+// EXPECTED iteration order when printing all students:
+//   103 -> [90, 85]
+//   101 -> [70]
+//   105 -> [60, 95, 88]
+//   (NOT sorted as 101, 103, 105 — insertion order must be preserved)
     return 0;
 }
